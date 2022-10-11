@@ -47,6 +47,7 @@ jobs:
         export PATH=$(pwd)/../vita-makepkg:$VITASDK/bin:$PATH
         bash ./build.sh ${{ matrix.package }}
     - name: Upload package
+      if: ${{ env.SSHPASS != '' }}
       run: |
         bash ./upload.sh ${{ matrix.package }}
     - name: Rename package
