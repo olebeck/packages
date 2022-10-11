@@ -90,6 +90,7 @@ jobs:
         export PATH=$(pwd)/../vita-makepkg:$VITASDK/bin:$PATH
         for f in ${{ matrix.package }}; do bash ./build.sh $f; done
     - name: Upload package
+      if: ${{ env.SSHPASS != '' }}
       run: |
         export PACKAGE=`echo ${{ matrix.package }} | awk '{print $NF}'`
         echo "PACKAGE=$PACKAGE" >> $GITHUB_ENV
