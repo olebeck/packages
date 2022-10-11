@@ -1,0 +1,130 @@
+diff --git a/3rdparty/carotene/hal/tegra_hal.hpp b/3rdparty/carotene/hal/tegra_hal.hpp
+index c2ae0c0d87..ec41dd8ead 100644
+--- a/3rdparty/carotene/hal/tegra_hal.hpp
++++ b/3rdparty/carotene/hal/tegra_hal.hpp
+@@ -48,6 +48,10 @@
+ #include <vector>
+ #include <opencv2/core/base.hpp>
+ 
++#ifndef M_PI
++#define M_PI           3.14159265358979323846  /* pi */
++#endif
++
+ #define RANGE_DATA(type, base, step) reinterpret_cast<type*>(const_cast<char *>(reinterpret_cast<const char *>(base)) + static_cast<size_t>(range.start) * step)
+ 
+ #define PARALLEL_CORE 0
+diff --git a/3rdparty/carotene/src/phase.cpp b/3rdparty/carotene/src/phase.cpp
+index 141b1e864a..74dfdf8ddb 100644
+--- a/3rdparty/carotene/src/phase.cpp
++++ b/3rdparty/carotene/src/phase.cpp
+@@ -40,6 +40,10 @@
+ #include <cfloat>
+ #include <cmath>
+ 
++#ifndef M_PI
++#define M_PI           3.14159265358979323846  /* pi */
++#endif
++
+ #include "common.hpp"
+ 
+ namespace CAROTENE_NS {
+diff --git a/3rdparty/protobuf/src/google/protobuf/io/coded_stream.h b/3rdparty/protobuf/src/google/protobuf/io/coded_stream.h
+index 45963ef86b..031ac57a57 100644
+--- a/3rdparty/protobuf/src/google/protobuf/io/coded_stream.h
++++ b/3rdparty/protobuf/src/google/protobuf/io/coded_stream.h
+@@ -132,7 +132,7 @@
+ #pragma runtime_checks("c", off)
+ #endif
+ #else
+-#ifdef __APPLE__
++#if defined(__APPLE__) || defined(__vita__)
+ #include <machine/endian.h>  // __BYTE_ORDER
+ #elif defined(__FreeBSD__)
+ #include <sys/endian.h>  // __BYTE_ORDER
+diff --git a/3rdparty/protobuf/src/google/protobuf/stubs/mutex.h b/3rdparty/protobuf/src/google/protobuf/stubs/mutex.h
+index c4599913be..f773ce7db1 100644
+--- a/3rdparty/protobuf/src/google/protobuf/stubs/mutex.h
++++ b/3rdparty/protobuf/src/google/protobuf/stubs/mutex.h
+@@ -118,7 +118,7 @@ class CallOnceInitializedMutex {
+ // mutexes.
+ class GOOGLE_PROTOBUF_CAPABILITY("mutex") PROTOBUF_EXPORT WrappedMutex {
+  public:
+-#if defined(__QNX__)
++#if defined(__QNX__) || defined(__vita__)
+   constexpr WrappedMutex() = default;
+ #else
+   constexpr WrappedMutex() {}
+diff --git a/3rdparty/protobuf/src/google/protobuf/stubs/port.h b/3rdparty/protobuf/src/google/protobuf/stubs/port.h
+index 045e25d892..2872930d8f 100644
+--- a/3rdparty/protobuf/src/google/protobuf/stubs/port.h
++++ b/3rdparty/protobuf/src/google/protobuf/stubs/port.h
+@@ -57,7 +57,7 @@
+ #pragma runtime_checks("c", off)
+ #endif
+ #else
+-#ifdef __APPLE__
++#if defined(__APPLE__) || defined(__vita__)
+ #include <machine/endian.h>  // __BYTE_ORDER
+ #elif defined(__FreeBSD__)
+ #include <sys/endian.h>  // __BYTE_ORDER
+diff --git a/modules/calib3d/src/usac/estimator.cpp b/modules/calib3d/src/usac/estimator.cpp
+index c5b783b655..07cc773010 100644
+--- a/modules/calib3d/src/usac/estimator.cpp
++++ b/modules/calib3d/src/usac/estimator.cpp
+@@ -5,6 +5,10 @@
+ #include "../precomp.hpp"
+ #include "../usac.hpp"
+ 
++#ifndef M_SQRT2
++#define M_SQRT2 1.41421356237309504880 /* \fBsqrt\fP(2) */
++#endif
++
+ namespace cv { namespace usac {
+ class HomographyEstimatorImpl : public HomographyEstimator {
+ private:
+diff --git a/modules/calib3d/src/usac/utils.cpp b/modules/calib3d/src/usac/utils.cpp
+index c4d74eb663..5204420e54 100644
+--- a/modules/calib3d/src/usac/utils.cpp
++++ b/modules/calib3d/src/usac/utils.cpp
+@@ -7,6 +7,10 @@
+ #include "opencv2/flann/miniflann.hpp"
+ #include <map>
+ 
++#ifndef M_PI
++#define M_PI           3.14159265358979323846  /* pi */
++#endif
++
+ namespace cv { namespace usac {
+ double Utils::getCalibratedThreshold (double threshold, const Matx33d &K1, const Matx33d &K2) {
+     return threshold / ((K1(0, 0) + K1(1, 1) +
+diff --git a/modules/dnn/src/torch/THDiskFile.cpp b/modules/dnn/src/torch/THDiskFile.cpp
+index 84b6b23e81..b335f0c522 100644
+--- a/modules/dnn/src/torch/THDiskFile.cpp
++++ b/modules/dnn/src/torch/THDiskFile.cpp
+@@ -112,7 +112,7 @@ static void THDiskFile_seek(THFile *self, long position)
+ 
+ #if defined(_WIN64)
+   if(_fseeki64(dfself->handle, (__int64)position, SEEK_SET) < 0)
+-#elif defined(_WIN32)
++#elif defined(_WIN32) || defined(__vita__)
+   if(fseek(dfself->handle, (long)position, SEEK_SET) < 0)
+ #else
+   if(fseeko(dfself->handle, (off_t)position, SEEK_SET) < 0)
+@@ -132,7 +132,7 @@ static void THDiskFile_seekEnd(THFile *self)
+ 
+ #if defined(_WIN64)
+   if(_fseeki64(dfself->handle, 0L, SEEK_END) < 0)
+-#elif defined(_WIN32)
++#elif defined(_WIN32) || defined(__vita__)
+   if(fseek(dfself->handle, 0L, SEEK_END) < 0)
+ #else
+   if(fseeko(dfself->handle, 0L, SEEK_END) < 0)
+@@ -151,7 +151,7 @@ static long THDiskFile_position(THFile *self)
+ 
+ #if defined(_WIN64)
+   __int64 offset = _ftelli64(dfself->handle);
+-#elif defined(_WIN32)
++#elif defined(_WIN32) || defined(__vita__)
+   long offset = ftell(dfself->handle);
+ #else
+   off_t offset = ftello(dfself->handle);
