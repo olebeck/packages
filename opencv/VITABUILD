@@ -19,7 +19,7 @@ build() {
     -DOPENCV_ENABLE_NONFREE=ON -DBUILD_SHARED_LIBS=OFF -DWITH_ITT=OFF -DWITH_OPENCL=OFF \
     -DBUILD_TESTS=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_opencv_ts=OFF -DBUILD_opencv_apps=OFF 
 
-  patch build/3rdparty/ade/ade-*/sources/ade/source/alloc.cpp ../ade-memalign.patch
+  patch build/3rdparty/ade/ade-*/sources/ade/source/alloc.cpp ../../ade-memalign.patch
 
   make -j$(nproc)
 }
