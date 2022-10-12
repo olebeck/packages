@@ -25,6 +25,6 @@ build() {
 }
 
 package () {
-  cd opencv/build
+  cd opencv-${pkgver}/build
   make DESTDIR=$pkgdir install
 }
