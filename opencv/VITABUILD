@@ -3,7 +3,7 @@ pkgver=4.6.0
 pkgrel=1
 url="https://github.com/opencv/opencv"
 source=("https://github.com/opencv/opencv/archive/refs/tags/${pkgver}.tar.gz" "opencv-ifdefs.patch" "ade-memalign.patch")
-sha256sums=('SKIP' 'SKIP', 'SKIP')
+sha256sums=('SKIP' 'SKIP' 'SKIP')
 depends=('zlib libwebp libpng')
 
 prepare() {
