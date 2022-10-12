@@ -1,5 +1,5 @@
---- alloc.cpp	2022-10-12 01:49:11.137366396 +0200
-+++ alloc.cpp	2022-10-11 23:35:09.824943276 +0200
+--- alloc.cpp	2019-08-07 10:55:16.000000000 +0200
++++ "alloc copy.cpp"	2022-10-12 11:56:10.866206106 +0200
 @@ -6,7 +6,7 @@
  
  #include "ade/memory/alloc.hpp"
@@ -9,3 +9,12 @@
  #include <malloc.h>
  #else
  #include <algorithm>
+@@ -24,7 +24,7 @@
+     ADE_ASSERT(util::is_pow2(alignment));
+ #if defined(_WIN32)
+     return _aligned_malloc(size, alignment);
+-#elif defined(__ANDROID__) || defined(ANDROID)
++#elif defined(__ANDROID__) || defined(ANDROID) || defined(__vita__)
+     return memalign(alignment, size);
+ #else
+     void* ret = nullptr;
