@@ -37,6 +37,20 @@ index 045e25d892..2872930d8f 100644
  #include <machine/endian.h>  // __BYTE_ORDER
  #elif defined(__FreeBSD__)
  #include <sys/endian.h>  // __BYTE_ORDER
+diff --git a/modules/core/src/system.cpp b/modules/core/src/system.cpp
+index 027072a5da..a694e53e8a 100644
+--- a/modules/core/src/system.cpp
++++ b/modules/core/src/system.cpp
+@@ -655,6 +655,9 @@ struct HWFeatures
+     #ifdef __mips_msa
+         have[CV_CPU_MSA] = true;
+     #endif
++    #ifdef __vita__
++        have[CV_CPU_NEON] = true;
++    #endif
+ 
+     #if (defined __ppc64__ || defined __PPC64__) && defined __linux__
+         unsigned int hwcap = getauxval(AT_HWCAP);
 diff --git a/modules/dnn/src/torch/THDiskFile.cpp b/modules/dnn/src/torch/THDiskFile.cpp
 index 84b6b23e81..b335f0c522 100644
 --- a/modules/dnn/src/torch/THDiskFile.cpp
